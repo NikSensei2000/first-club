@@ -34,7 +34,6 @@ public class MembershipTierService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "membershipTiers", key = "'all'")
     public List<MembershipTierResponse> getAllTiers() {
         logger.info("Fetching all active membership tiers with benefits");
         logger.debug("Checking cache for membership tiers");
@@ -64,7 +63,6 @@ public class MembershipTierService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "membershipTiers", key = "#id")
     public MembershipTierResponse getTierById(Long id) {
         logger.info("Fetching membership tier by id: {}", id);
         logger.debug("Checking cache for tier id: {}", id);

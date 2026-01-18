@@ -123,7 +123,6 @@ public class SubscriptionService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "userSubscriptions", key = "#userId")
     public SubscriptionResponse getCurrentSubscription(Long userId) {
         logger.info("Fetching current active subscription for userId: {}", userId);
         logger.debug("Checking cache for user subscription: {}", userId);
@@ -187,7 +186,7 @@ public class SubscriptionService {
 
         logger.debug("New tier found: {} (level: {})", newTier.getName(), newTier.getTierLevel());
 
-        if (subscription.getTierId().equals(newTier.getId())) {
+        if (subscription.getTier().getId().equals(newTier.getId())) {
             logger.warn("Tier change failed - user {} already on tier: {}", userId, newTier.getName());
             throw new BusinessException("User is already on this tier");
         }
@@ -302,12 +301,12 @@ public class SubscriptionService {
     private SubscriptionResponse mapToResponse(UserSubscription subscription) {
         logger.trace("Mapping subscription entity to response DTO - subscriptionId: {}", subscription.getId());
         
-        MembershipPlanResponse planResponse = planService.getPlanById(subscription.getPlanId());
-        MembershipTierResponse tierResponse = tierService.getTierById(subscription.getTierId());
+        MembershipPlanResponse planResponse = planService.getPlanById(subscription.getPlan().getId());
+        MembershipTierResponse tierResponse = tierService.getTierById(subscription.getTier().getId());
 
         return SubscriptionResponse.builder()
                 .id(subscription.getId())
-                .userId(subscription.getUserId())
+                .userId(subscription.getUser().getId())
                 .plan(planResponse)
                 .tier(tierResponse)
                 .status(subscription.getStatus())

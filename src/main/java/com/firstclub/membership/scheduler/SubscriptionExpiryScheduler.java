@@ -47,18 +47,18 @@ public class SubscriptionExpiryScheduler {
         for (UserSubscription subscription : expiredSubscriptions) {
             try {
                 logger.debug("Expiring subscription - id: {}, userId: {}, expiryDate: {}", 
-                           subscription.getId(), subscription.getUserId(), subscription.getExpiryDate());
+                           subscription.getId(), subscription.getUser().getId(), subscription.getExpiryDate());
                 
                 subscription.setStatus(SubscriptionStatus.EXPIRED);
                 subscriptionRepository.save(subscription);
                 successCount++;
                 
                 logger.info("Expired subscription successfully - subscriptionId: {}, userId: {}", 
-                           subscription.getId(), subscription.getUserId());
+                           subscription.getId(), subscription.getUser().getId());
             } catch (Exception e) {
                 failureCount++;
                 logger.error("Failed to expire subscription - subscriptionId: {}, userId: {}, error: {}", 
-                           subscription.getId(), subscription.getUserId(), e.getMessage(), e);
+                           subscription.getId(), subscription.getUser().getId(), e.getMessage(), e);
             }
         }
 

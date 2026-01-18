@@ -16,7 +16,7 @@ import java.util.Optional;
 @Repository
 public interface UserSubscriptionRepository extends JpaRepository<UserSubscription, Long> {
 
-    @Query("SELECT s FROM UserSubscription s WHERE s.userId = :userId " +
+    @Query("SELECT s FROM UserSubscription s WHERE s.user.id = :userId " +
            "AND s.status = 'ACTIVE' AND s.expiryDate > :now " +
            "ORDER BY s.expiryDate DESC")
     Optional<UserSubscription> findActiveSubscription(
@@ -25,14 +25,15 @@ public interface UserSubscriptionRepository extends JpaRepository<UserSubscripti
     );
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT s FROM UserSubscription s WHERE s.userId = :userId " +
+    @Query("SELECT s FROM UserSubscription s WHERE s.user.id = :userId " +
            "AND s.status = 'ACTIVE' AND s.expiryDate > :now")
     Optional<UserSubscription> findActiveSubscriptionWithLock(
         @Param("userId") Long userId,
         @Param("now") LocalDateTime now
     );
 
-    List<UserSubscription> findByUserIdOrderByCreatedAtDesc(Long userId);
+    @Query("SELECT s FROM UserSubscription s WHERE s.user.id = :userId ORDER BY s.createdAt DESC")
+    List<UserSubscription> findByUserIdOrderByCreatedAtDesc(@Param("userId") Long userId);
 
     @Query("SELECT s FROM UserSubscription s WHERE s.status = :status " +
            "AND s.expiryDate <= :expiryDate")

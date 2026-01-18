@@ -26,7 +26,6 @@ public class MembershipPlanService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "membershipPlans", key = "'all'")
     public List<MembershipPlanResponse> getAllPlans() {
         logger.info("Fetching all active membership plans");
         logger.debug("Checking cache for membership plans");
@@ -43,7 +42,6 @@ public class MembershipPlanService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "membershipPlans", key = "#id")
     public MembershipPlanResponse getPlanById(Long id) {
         logger.info("Fetching membership plan by id: {}", id);
         logger.debug("Checking cache for plan id: {}", id);

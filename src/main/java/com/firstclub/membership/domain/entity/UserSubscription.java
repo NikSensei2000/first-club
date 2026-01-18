@@ -31,22 +31,13 @@ public class UserSubscription {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "user_id", insertable = false, updatable = false)
-    private Long userId;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plan_id", nullable = false)
     private MembershipPlan plan;
 
-    @Column(name = "plan_id", insertable = false, updatable = false)
-    private Long planId;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tier_id", nullable = false)
     private MembershipTier tier;
-
-    @Column(name = "tier_id", insertable = false, updatable = false)
-    private Long tierId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
