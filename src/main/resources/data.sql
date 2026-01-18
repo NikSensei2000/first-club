@@ -1,3 +1,13 @@
+-- Insert test users (password is 'password123' for all users, BCrypt encoded)
+INSERT INTO users (username, email, password, full_name, active, cohort, version, created_at, updated_at) VALUES
+('testuser', 'test@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'Test User', true, NULL, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('vipuser', 'vip@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'VIP User', true, 'VIP', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- Insert user roles
+INSERT INTO user_roles (user_id, role) VALUES
+(1, 'ROLE_USER'),
+(2, 'ROLE_USER');
+
 INSERT INTO membership_plans (name, description, duration, price, active, version, created_at, updated_at) VALUES
 ('Monthly Basic', 'Basic membership with monthly billing', 'MONTHLY', 9.99, true, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('Quarterly Premium', 'Premium membership with quarterly billing and savings', 'QUARTERLY', 24.99, true, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
